@@ -3,15 +3,11 @@ package com.newsfeed.demo.Repository;
 import com.newsfeed.demo.domain.School;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
-public class SchoolRepository {
-
-    @PersistenceContext
-    private EntityManager em;
-
-    public  void save(School school){
-        em.persist(school);
-    }
+public interface SchoolRepository extends JpaRepository<School, Long> {
 }
