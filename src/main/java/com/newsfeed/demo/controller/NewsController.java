@@ -1,67 +1,56 @@
 package com.newsfeed.demo.controller;
 
 import com.newsfeed.demo.domain.News;
-import com.newsfeed.demo.Repository.NewsRepository;
+import com.newsfeed.demo.service.NewsService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
 import java.util.List;
 
+@Tag(name = "뉴스피드 API", description = "뉴스피드 API")
 @RestController
 @RequestMapping("/news")
 public class NewsController {
 
-    @Autowired
-    private NewsRepository newsRepository;
+    private final NewsService newsService;
 
-    // 모든 뉴스 조회
+    @Autowired
+    public NewsController(NewsService newsService) {
+        this.newsService = newsService;
+    }
+
+    @Operation(summary = "모든 뉴스피드 조회", description = "설명")
     @GetMapping
     public List<News> getAllNews() {
-        return newsRepository.findAll();
+        return newsService.getAllNews();
     }
 
-    // 뉴스 상세 정보 조회
     @GetMapping("/{id}")
     public ResponseEntity<News> getNewsById(@PathVariable Long id) {
-        News news = newsRepository.findById(id).orElse(null);
-        if (news == null) {
-            return ResponseEntity.notFound().build();
-        } else {
-            return ResponseEntity.ok(news);
-        }
+        News news = newsService.getNewsById(id);
+        return ResponseEntity.ok().body(news);
     }
 
-    // 뉴스 추가
     @PostMapping
     public ResponseEntity<News> addNews(@RequestBody News news) {
-        News savedNews = newsRepository.save(news);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedNews);
+        News createdNews = newsService.addNews(news);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdNews);
     }
 
-    // 뉴스 수정
     @PutMapping("/{id}")
     public ResponseEntity<News> updateNews(@PathVariable Long id, @RequestBody News news) {
-        News existingNews = newsRepository.findById(id).orElse(null);
-        if (existingNews == null) {
-            return ResponseEntity.notFound().build();
-        } else {
-            news.setId(id);
-            News updatedNews = newsRepository.save(news);
-            return ResponseEntity.ok(updatedNews);
-        }
+        News updatedNews = newsService.updateNews(id, news);
+        return ResponseEntity.ok().body(updatedNews);
     }
 
-    // 뉴스 삭제
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteNews(@PathVariable Long id) {
-        News existingNews = newsRepository.findById(id).orElse(null);
-        if (existingNews == null) {
-            return ResponseEntity.notFound().build();
-        } else {
-            newsRepository.delete(existingNews);
-            return ResponseEntity.noContent().build();
-        }
+        newsService.deleteNews(id);
+        return ResponseEntity.noContent().build();
     }
 }

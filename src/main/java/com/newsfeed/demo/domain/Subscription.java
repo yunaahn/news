@@ -1,22 +1,22 @@
 package com.newsfeed.demo.domain;
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-
 @Entity
+@Table(name = "user_subscriptions")
 @Getter @Setter
-@Table(name = "users")
-public class User {
+public class Subscription {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String name;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    @Column(nullable = false)
-    private int user_type;
-
+    @ManyToOne
+    @JoinColumn(name = "school_id")
+    private School school;
 }

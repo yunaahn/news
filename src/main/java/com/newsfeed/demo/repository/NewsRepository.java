@@ -1,13 +1,13 @@
-package com.newsfeed.demo.Repository;
+package com.newsfeed.demo.repository;
 
 import com.newsfeed.demo.domain.News;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Repository
 public interface NewsRepository extends JpaRepository<News, Long> {
 
+    List<News> findBySchoolIdIn(List<Long> subscribedSchoolIds);
 }

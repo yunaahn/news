@@ -1,8 +1,7 @@
-package com.newsfeed.demo.Service;
+package com.newsfeed.demo.service;
 
-
-import com.newsfeed.demo.Repository.SchoolRepository;
 import com.newsfeed.demo.domain.School;
+import com.newsfeed.demo.repository.SchoolRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
