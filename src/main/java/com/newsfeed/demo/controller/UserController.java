@@ -25,7 +25,6 @@ public class UserController {
     @PostMapping("/{Id}/subscribe/{schoolId}")
     public ResponseEntity<Long> subscribeToSchool(@PathVariable Long Id, @PathVariable Long schoolId) {
         Long subscribedSchoolId = userService.subscribeToSchool(Id, schoolId);
-        // 여기서 새로운 구독 ID를 반환하거나 적절한 처리를 수행합니다.
         return ResponseEntity.status(HttpStatus.CREATED).body(subscribedSchoolId);
     }
 

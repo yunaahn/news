@@ -22,8 +22,7 @@ public class UserService {
         Optional<User> optionalUser = userRepository.findById(Id);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-            // 여기서 새로운 구독 ID를 반환하거나 적절한 처리를 수행합니다.
-            return user.getSchoolId(); // 임시로 사용자의 학교 ID를 반환하도록 수정했습니다.
+            return user.getSchoolId();
         }
         return null;
     }
