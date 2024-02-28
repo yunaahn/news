@@ -10,12 +10,16 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.Collections;
 
+import static org.awaitility.Awaitility.given;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(NewsController.class)
 public class NewsControllerTest {
@@ -28,59 +32,62 @@ public class NewsControllerTest {
 
     @Test
     public void getAllNewsTest() throws Exception {
-        // Given
+
         News news = new News();
         news.setTitle("Test News");
         news.setContent("This is a test news");
 
         when(newsService.getAllNews()).thenReturn(Collections.singletonList(news));
 
-        // When and Then
+
         mockMvc.perform(MockMvcRequestBuilders.get("/news")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].title").value("Test News"));
+
+
+
+
     }
 
     @Test
     public void getNewsByIdTest() throws Exception {
-        // Given
-        Long id = 1L;
+
+        Long newsId = 1L;
         News news = new News();
-        news.setId(id);
+        news.setId(newsId);
         news.setTitle("Test News");
         news.setContent("This is a test news");
 
-        when(newsService.getNewsById(id)).thenReturn(news);
+        when(newsService.getNewsById(newsId)).thenReturn(news);
 
-        // When and Then
-        mockMvc.perform(MockMvcRequestBuilders.get("/news/{id}", id)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(id))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.title").value("Test News"));
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/news/{id}" + newsId))
+                .andExpect(status().isOk())
+                .andExpect((ResultMatcher) jsonPath("$.id").value(newsId))
+                .andExpect((ResultMatcher) jsonPath("$.title").value("Test News"));
     }
 
     @Test
     public void addNewsTest() throws Exception {
-        // Given
+
         News news = new News();
         news.setTitle("Test News");
         news.setContent("This is a test news");
 
         when(newsService.addNews(Mockito.any(News.class))).thenReturn(news);
 
-        // When and Then
+
         mockMvc.perform(MockMvcRequestBuilders.post("/news")
                         .content(asJsonString(news))
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(status().isCreated())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.title").value("Test News"));
     }
 
     @Test
     public void updateNewsTest() throws Exception {
-        // Given
+
         Long id = 1L;
         News news = new News();
         news.setId(id);
@@ -89,27 +96,27 @@ public class NewsControllerTest {
 
         when(newsService.updateNews(Mockito.anyLong(), Mockito.any(News.class))).thenReturn(news);
 
-        // When and Then
+
         mockMvc.perform(MockMvcRequestBuilders.put("/news/{id}", id)
                         .content(asJsonString(news))
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(id))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.title").value("Updated Test News"));
     }
 
     @Test
     public void deleteNewsTest() throws Exception {
-        // Given
+
         Long id = 1L;
 
-        // When and Then
+
         mockMvc.perform(MockMvcRequestBuilders.delete("/news/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isNoContent());
+                .andExpect(status().isNoContent());
     }
 
-    // Helper method to convert object to JSON string
+
     private String asJsonString(final Object obj) {
         try {
             return new ObjectMapper().writeValueAsString(obj);
