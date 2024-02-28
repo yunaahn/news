@@ -10,11 +10,11 @@ import java.util.List;
 @Service
 public class NewsService {
 
-    private final NewsRepository newsRepository;
+    private static  NewsRepository newsRepository;
 
     @Autowired
     public NewsService(NewsRepository newsRepository) {
-        this.newsRepository = newsRepository;
+        NewsService.newsRepository = newsRepository;
     }
 
     public static List<News> getAllNews() {

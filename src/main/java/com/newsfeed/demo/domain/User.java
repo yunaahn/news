@@ -19,4 +19,5 @@ public class User {
     @Column(nullable = false)
     private int user_type;
 
+
 }
