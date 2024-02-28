@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-@Tag(name = "뉴스피드 API", description = "뉴스피드 API")
+@Tag(name = "학교페이지API", description = "학교 페이지 생성 및 관리")
 @RestController
 @RequestMapping("/school")
 public class SchoolController {

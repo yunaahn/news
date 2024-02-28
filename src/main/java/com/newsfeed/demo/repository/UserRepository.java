@@ -9,6 +9,5 @@ package com.newsfeed.demo.repository;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-
-        List<Long> findSubscribedSchoolIdsForCurrentUser();
+        List<Long> findSubscribedSchoolIdsById(Long Id);
 }

@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 
 @Entity
 @Getter @Setter
@@ -14,10 +16,14 @@ public class User {
     private Long id;
 
     @Column(nullable = false)
-    private String name;
+    private Long schoolId;
 
     @Column(nullable = false)
     private int user_type;
+
+    @ElementCollection
+    private List<Long> subscribedSchoolIds;
+
 
 
 }

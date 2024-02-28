@@ -16,7 +16,7 @@ public class News {
 
     @ManyToOne
     @JoinColumn(name = "school_id")
-    private Long schoolId;
+    private School school;
 
     @Column(nullable = false)
     private String content;
