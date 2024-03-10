@@ -21,21 +21,5 @@ public class UserController {
         this.userService = userService;
     }
 
-    @Operation(summary = "학교 구독", description = "유저가 학교 페이지 구독 설정")
-    @PostMapping("/{Id}/subscribe/{schoolId}")
-    public ResponseEntity<Long> subscribeToSchool(@PathVariable Long Id, @PathVariable Long schoolId) {
-        Long subscribedSchoolId = userService.subscribeToSchool(Id, schoolId);
-        return ResponseEntity.status(HttpStatus.CREATED).body(subscribedSchoolId);
-    }
 
-    @Operation(summary = "학교 구독 취소", description = "유저가 학교 페이지 구독 취소")
-    @DeleteMapping("/{Id}/unsubscribe/{schoolId}")
-    public ResponseEntity<Void> unsubscribeFromSchool(@PathVariable Long Id, @PathVariable Long schoolId) {
-        boolean unsubscribed = userService.unsubscribeFromSchool(Id, schoolId);
-        if (unsubscribed) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
 }

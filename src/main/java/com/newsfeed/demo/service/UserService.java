@@ -18,25 +18,5 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public Long subscribeToSchool(Long Id, Long schoolId) {
-        Optional<User> optionalUser = userRepository.findById(Id);
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            return user.getSchoolId();
-        }
-        return null;
-    }
 
-    public boolean unsubscribeFromSchool(Long Id, Long schoolId) {
-        Optional<User> optionalUser = userRepository.findById(Id);
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            if (user.getSchoolId() != null && user.getSchoolId().equals(schoolId)) {
-                user.setSchoolId(null);
-                userRepository.save(user);
-                return true;
-            }
-        }
-        return false;
-    }
 }
